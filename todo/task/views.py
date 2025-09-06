@@ -1,5 +1,6 @@
 from django.shortcuts import render,redirect,get_list_or_404
 from .models import Task
+from .import models,forms
 
 # Create your views here.
 def task_list(request):
@@ -22,3 +23,30 @@ def task_list(request):
         'status_filter':status_filter,
         'category_filter':category_filter,
     })
+
+def task_create(request):
+    if request.method=='POST':
+        form = forms.TaskForm(request.POST)
+        if form.is_valid():
+            task = form.save(commit=False)
+            task.user = request.user
+            task.save()
+            return redirect('')
+        else:
+            form = forms.TaskForm()
+        return render(request,'',{'form':form})
+
+def task_detail(request,task_id):
+    task = get_list_or_404(Task,id = task_id,user = request.user)
+    return render(request,'',{'task':task})
+
+def task_delete(request,task_id):
+    task = get_list_or_404(Task,id=task_id,user=request.user)
+    task.delete()
+    return redirect('')
+
+def task_mark_completed(request,task_id):
+    task = get_list_or_404(Task,id = task_id,user=request.user)
+    task.is_compleated = True
+    task.save()
+    return redirect('')
