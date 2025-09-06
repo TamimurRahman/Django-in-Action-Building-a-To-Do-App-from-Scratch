@@ -1,6 +1,8 @@
 from django.shortcuts import render,redirect,get_list_or_404
 from .models import Task
 from .import models,forms
+from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.auth import authenticate,login
 
 # Create your views here.
 def task_list(request):
@@ -50,3 +52,14 @@ def task_mark_completed(request,task_id):
     task.is_compleated = True
     task.save()
     return redirect('')
+
+def register(request):
+    if request.method == 'POST':
+        form = AuthenticationForm(data=request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('')
+        else:
+            form = forms.register()
+        return render(request,'',{'form':form})
+    
