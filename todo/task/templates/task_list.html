@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block content %}
+{% for task in  task %}
+   <div class="card" style="width: 18rem;">
+  <div class="card-body">
+    <h5 class="card-title">{{ task.title }}</h5>
+    <p class="card-text">{{ task.description }}</p>
+    <p>Due Date: {{ task.due_date }}</p>
+    <p>Due Time: {{task.due_time}}</p>
+    <p>{{task.status}}</p>
+
+  </div>
+</div>
+{% endfor %}
+{% endblock %}
